@@ -5,8 +5,8 @@ MAINTAINER vi.nt <vi.nt@geekup.vn>
 
 # Install consul-template
 RUN apt-get update && apt-get install -y --no-install-recommends curl unzip
-RUN curl -SL https://releases.hashicorp.com/consul-template/0.15.0/consul-template_0.15.0_linux_amd64.zip | \
-    unzip 1 /usr/local/bin && \
+RUN curl -o /tmp/consul-template.zip https://releases.hashicorp.com/consul-template/0.15.0/consul-template_0.15.0_linux_amd64.zip && \
+    unzip /tmp/consul-template.zip -d /usr/local/bin && \
     rm -v /etc/nginx/conf.d/* && \
 	curl -SL http://stedolan.github.io/jq/download/linux64/jq > /usr/local/bin/jq && chmod u+x /usr/local/bin/jq
 
