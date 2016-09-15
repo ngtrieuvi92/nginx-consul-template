@@ -7,8 +7,8 @@
 CONFIG_JSON=${CONFIG_JSON:-/config.json}
 CONFIG=$(cat ${CONFIG_JSON})
 CONSUL_KV_PREFIX=${CONSUL_KV_PREFIX:-nginx}
-CONSUL_PORT_8500_TCP_ADDR=${CONSUL_PORT_8500_TCP_ADDR:-127.0.0.1}
-CONSUL_PORT_8500_TCP_PORT=${CONSUL_PORT_8500_TCP_PORT:-8500}
+CONSULT_ADDRESS=${CONSULT_ADDRESS:-127.0.0.1}
+CONSULT_PORT=${CONSULT_PORT:-8500}
 
 has_value() {
     type=$(echo "$1" | jq -r -e "$2 | type")
@@ -26,7 +26,7 @@ get_value(){
 }
 
 get_keys() {
-	result=$(curl -sSL ${CONSUL_PORT_8500_TCP_ADDR}:${CONSUL_PORT_8500_TCP_PORT}/v1/kv/?keys | jq -r -e ".[]")
+	result=$(curl -sSL ${CONSULT_ADDRESS}:${CONSULT_PORT}/v1/kv/?keys | jq -r -e ".[]")
 	echo "${result}"
 }
 
@@ -34,7 +34,7 @@ if [ -n "${RESET_CONFIG}" ]; then
 	echo "#[INFO] reset all keys"
 	keys=$(get_keys)
 	echo "{$keys}"
-    echo "${keys}" | xargs -I% curl -sSL -X DELETE "http://${CONSUL_PORT_8500_TCP_ADDR}:${CONSUL_PORT_8500_TCP_PORT}/v1/kv/%" > /dev/null 2>&1
+    echo "${keys}" | xargs -I% curl -sSL -X DELETE "http://${CONSULT_ADDRESS}:${CONSULT_PORT}/v1/kv/%" > /dev/null 2>&1
 fi
 
 declare -A N
@@ -55,5 +55,5 @@ done
 # register to consul key-value store
 for i in ${!N[@]}; do
     echo "#[INFO] ${i} => [${N[$i]}]"
-    curl -sSL -X PUT -d "${N[$i]}" http://${CONSUL_PORT_8500_TCP_ADDR}:${CONSUL_PORT_8500_TCP_PORT}/v1/kv/${CONSUL_KV_PREFIX}${i} > /dev/null 2>&1
+    curl -sSL -X PUT -d "${N[$i]}" http://${CONSULT_ADDRESS}:${CONSULT_PORT}/v1/kv/${CONSUL_KV_PREFIX}${i} > /dev/null 2>&1
 done

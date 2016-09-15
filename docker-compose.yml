@@ -5,7 +5,7 @@ nginx:
     - ${CONFIG_JSON}:/config.json
   environment:
     - "affinity:container!=nodes_nginx_*"
-    - "CONSUL_PORT_8500_TCP_ADDR=127.0.0.1"
+    - "CONSULT_ADDRESS=127.0.0.1"
     - "LOG_LEVEL=warn"
     - "CONSUL_KV_PREFIX=nginx"
   net: "host"
@@ -37,8 +37,7 @@ consul:
     - "8500"
     - "8600/udp"
   environment:
-    CONSUL_SERVER_ADDRESS:
-    - "affinity:container!=nodes_consul_*"
+    CONSUL_SERVER_ADDRESS: "affinity:container!=nodes_consul_*"
   net: "host"
   restart: always
 
