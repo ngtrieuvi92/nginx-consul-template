@@ -15,5 +15,5 @@ ${NGINX} -c ${NGINX_CONF} -t && \
 # start consul-template
 /usr/local/bin/consul-template \
     -log-level ${LOG_LEVEL:-warn} \
-    -consul ${CONSUL_PORT_8500_TCP_ADDR:-localhost}:${CONSUL_PORT_8500_TCP_PORT:-8500} \
+    -consul ${CONSULT_ADDRESS:-localhost}:${CONSULT_PORT:-8500} \
     -template "${NGINX_TEMPLATE}:${NGINX_CONF}:${RESTART_COMMAND} || true" \
