@@ -12,22 +12,21 @@ http {
 
   # Generate server definitions of services.
   # Only setup reverse proxy for service have tag gu_devops=true
-  {{ range $service := services }} {{ if .Tags | contains "gu_devops=true"   }}
-  server {
-  # Simplest, just listen on port 80
-    listen 80
-    {{ range $server_name_tag := .Tags }} {{ if $server_name_tag | contains "gu_service_domain" }}
-      # Split tag to parse server name 
-      {{ $server_name := $server_name_tag | split "="}}
-      # Get server name
-      server_name "{{index $server_name 1}}";
-
-      {{ range $service_detail := service $service.Name}}
-        location / {
-          proxy_pass http://{{ $service_detail.Address }}:{{ $service_detail.Port }}/;
-        }
-      {{ end }} 
-  {{ end }} {{ end }}
-  }
+  {{ range $service := services }} {{ if $service.Tags | contains "gu_devops=true"   }}
+    {{ range $server_name_tag := $service.Tags }} {{ if $server_name_tag | contains "gu_service_domain" }}
+      server {
+        # Simplest, just listen on port 80
+        listen 80
+        # Split tag to parse server name 
+        {{ $server_name := $server_name_tag | split "="}}
+        # Get server name
+        server_name "{{index $server_name 1}}";
+        {{ range $service_detail := service $service.Name}}
+          location / {
+            proxy_pass http://{{ $service_detail.Address }}:{{ $service_detail.Port }}/;
+          }
+        {{ end }}
+      }
+    {{ end }} {{ end }} 
   {{ end }} {{ end }}
 }
