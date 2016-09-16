@@ -16,7 +16,7 @@ http {
     {{ range $server_name_tag := $service.Tags }} {{ if $server_name_tag | contains "gu_service_domain" }}
       server {
         # Simplest, just listen on port 80
-        listen 80
+        listen 80;
         # Split tag to parse server name 
         {{ $server_name := $server_name_tag | split "="}}
         # Get server name
