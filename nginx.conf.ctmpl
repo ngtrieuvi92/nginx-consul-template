@@ -20,7 +20,7 @@ http {
         # Split tag to parse server name 
         {{ $server_name := $server_name_tag | split "="}}
         # Get server name
-        server_name "{{index $server_name 1}}";
+        server_name {{index $server_name 1}};
         {{ range $service_detail := service $service.Name}}
           location / {
             proxy_pass http://{{ $service_detail.Address }}:{{ $service_detail.Port }}/;
