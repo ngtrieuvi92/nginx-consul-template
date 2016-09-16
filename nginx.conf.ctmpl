@@ -27,8 +27,8 @@ http {
     server {
       # Simplest, just listen on port 80
       listen 80;
-      error_log /var/log/nginx/{{.Name}}-error.log debug;
-      access_log /var/log/nginx/{{.Name}}-access.log;
+      error_log /var/log/nginx/{{service.Name}}-error.log debug;
+      access_log /var/log/nginx/{{service.Name}}-access.log;
       # Split tag to parse server name 
       {{ $server_name := $server_name_tag | split "="}}
       # Get server name
