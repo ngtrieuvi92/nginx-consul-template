@@ -10,7 +10,7 @@ http {
   {{ range "nginx/http" | ls }}
   {{ .Key }} {{ .Value }};{{ end }}
   error_log /var/log/nginx/docker-error.log debug;
-  access_log /var/log/nginx/docker-access.log debug;
+  access_log /var/log/nginx/docker-access.log;
   # Generate server definitions of services.
   # Only setup reverse proxy for service have tag gu_devops=true
  server {
@@ -19,7 +19,6 @@ http {
       stub_status on;
       access_log on;
       allow all;
-      deny all;
     }
   }
 
@@ -28,6 +27,8 @@ http {
     server {
       # Simplest, just listen on port 80
       listen 80;
+      error_log /var/log/nginx/{{.Name}}-error.log debug;
+      access_log /var/log/nginx/{{.Name}}-access.log;
       # Split tag to parse server name 
       {{ $server_name := $server_name_tag | split "="}}
       # Get server name
