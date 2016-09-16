@@ -9,7 +9,7 @@ events {
 http {
   {{ range "nginx/http" | ls }}
   {{ .Key }} {{ .Value }};{{ end }}
-
+  error_log /var/log/nginx/docker-error.log debug;
   # Generate server definitions of services.
   # Only setup reverse proxy for service have tag gu_devops=true
   {{ range $service := services }} {{ if $service.Tags | contains "gu_devops=true"   }}
