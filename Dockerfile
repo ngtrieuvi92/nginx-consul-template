@@ -20,9 +20,15 @@ RUN chmod u+x /startup.sh && \
     chmod u+x /restart.sh && \
     chmod u+x /consul_config.sh
 
+# make /template directory and set it as volume for external template file
+RUN mkdir /template
+VOLUME /template
+
 WORKDIR /
 
 EXPOSE 80 443
 
+# Set entrypoint.sh as entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]
 # Set statup.sh scripts as default cmd
 CMD ["/startup.sh"]
