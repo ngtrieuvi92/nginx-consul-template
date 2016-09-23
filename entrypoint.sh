@@ -7,6 +7,8 @@ DEFAULT_TEMPLATE_FILE=/etc/nginx/ngnix.conf.ctmpl
 if [ -f "$TEMPLATE_FILE" ]; then
   echo "> Override default template\n"
   mv -f $TEMPLATE_FILE $DEFAULT_TEMPLATE_FILE
+
 else
   echo "$ Starting with default template\n"
 fi
+. /startup.sh
