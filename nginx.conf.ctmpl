@@ -7,6 +7,7 @@ events {
 }
 
 http {
+  client_max_body_size 1024M;
   {{ range "nginx/http" | ls }}
   {{ .Key }} {{ .Value }};{{ end }}
   error_log /var/log/nginx/docker-error.log debug;
