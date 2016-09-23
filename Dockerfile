@@ -13,11 +13,13 @@ RUN curl -o /tmp/consul-template.zip https://releases.hashicorp.com/consul-templ
 # Add nginx.conf && nginx template
 ADD nginx.conf /etc/nginx/nginx.conf
 ADD nginx.conf.ctmpl /etc/nginx/nginx.conf.ctmpl
+ADD entrypoint.sh /entrypoint.sh
 
 # Add boot script
 ADD startup.sh restart.sh consul_config.sh config.json /
 RUN chmod u+x /startup.sh && \
     chmod u+x /restart.sh && \
+    chmod u+x /entrypoint.sh && \
     chmod u+x /consul_config.sh
 
 # make /template directory and set it as volume for external template file
